@@ -23,4 +23,13 @@ public class JwtDto {
 
     public JwtDto() {
     }
+
+    @Override
+    public String toString() {
+        return "JwtDto{" +
+                "id=" + id +
+                ", role=" + role +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

@@ -32,4 +32,5 @@ public class ArticleDto {
     private RegionDto region;
     private ArticleTypeDto articleType;
     private Integer categoryId;
+    private Integer likeCount;
 }

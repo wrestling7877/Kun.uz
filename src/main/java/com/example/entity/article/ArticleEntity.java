@@ -96,5 +96,8 @@ public class  ArticleEntity {
     @Column
     private Integer viewCount = 0;
 
+    @Column
+    private Integer likeCount = 0;
+
 
 }

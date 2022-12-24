@@ -1,6 +1,5 @@
-package com.example.entity;
+package com.example.entity.article;
 
-import com.example.entity.article.ArticleEntity;
 import com.example.enums.LikeEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,8 +8,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "likes")
-public class LikeEntity {
+@Table(name = "article_likes")
+public class ArticleLikeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

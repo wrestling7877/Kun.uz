@@ -19,4 +19,5 @@ public class ProfileFilterDto {
     private List<ProfileRole> role;
     private LocalDate fromDate;
     private LocalDate toDate;
+
 }

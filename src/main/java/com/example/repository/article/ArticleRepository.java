@@ -1,6 +1,5 @@
 package com.example.repository.article;
 
-import com.example.dto.entityDto.article.ArticleShortInfoDTO;
 import com.example.entity.article.ArticleEntity;
 import com.example.enums.ArticleStatus;
 import com.example.mapper.ArticleFullInfo;
@@ -72,4 +71,7 @@ public interface ArticleRepository extends JpaRepository<ArticleEntity, String> 
     @Query(value = " select a.id as id,a.title as title,a.description as description, a.image_id as imageId, a.published_date as publishedDate"+
             " from article as a join category as c on c.id = a.category_id where c.key= ?1", nativeQuery = true)
     Page<ArticleShortInfoMapper> getPageByCategoryKey(String key, Pageable pageable);
+
+
+    ArticleEntity getById (String id);
 }

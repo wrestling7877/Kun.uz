@@ -1,0 +1,25 @@
+###
+POST http://localhost:8080/article/admin/filterPage
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NzEzMDU4NDEsImlkIjo1LCJlbWFpbCI6Im5vcmthYm95QGdtYWlsLmNvbSAiLCJyb2xlIjoiUFVCTElTSEVSIiwiZXhwIjoxNjcxMzkyMjQxLCJpc3MiOiJLdW4udXoifQ.LzTbJWits7yBSix_WK7xuag7CPgtAczSvDXfXSank-KxNl0SvaA1cHJ7lyleVejRSo0_ml4OQbrPwGa_5HmRsA
+
+{
+  "status": "PUBLISHED",
+  "title": "ssssssssssssssssssssss"
+
+}
+
+
+###
+POST http://localhost:8080/article/admin/fullFilterPage
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NzEzMDU4NDEsImlkIjo1LCJlbWFpbCI6Im5vcmthYm95QGdtYWlsLmNvbSAiLCJyb2xlIjoiUFVCTElTSEVSIiwiZXhwIjoxNjcxMzkyMjQxLCJpc3MiOiJLdW4udXoifQ.LzTbJWits7yBSix_WK7xuag7CPgtAczSvDXfXSank-KxNl0SvaA1cHJ7lyleVejRSo0_ml4OQbrPwGa_5HmRsA
+
+
+{
+  "status": "PUBLISHED",
+  "title": "ssssssssssssssssssssss"
+
+}
+
+

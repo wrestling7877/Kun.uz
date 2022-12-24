@@ -36,7 +36,7 @@ public class ProfileController {
     public ResponseEntity<?> update(@RequestBody ProfileDto profileDto,
                                     HttpServletRequest request) {
 
-        JwtDto jwtDto = HttpRequestUtil.getJwtDto(request, ProfileRole.ADMIN);
+        JwtDto jwtDto = HttpRequestUtil.getJwtDtoForEveryone(request);
 
         ProfileDto response = profileService.update(profileDto, jwtDto);
 
@@ -72,7 +72,6 @@ public class ProfileController {
         List<ProfileDto> profile = profileService.filter(filterDTO, page, size);
         return ResponseEntity.ok(profile);
     }
-
 
 
 }

@@ -21,6 +21,19 @@ public class HttpRequestUtil {
 
     }
 
+
+    public static JwtDto getJwtDtoForEveryone(HttpServletRequest request) {
+
+
+        Integer id = (Integer) request.getAttribute("id");
+        String email = (String) request.getAttribute("email");
+        ProfileRole role = (ProfileRole) request.getAttribute("role");
+
+
+        return new JwtDto(id, role, email);
+
+    }
+
     public static Integer getProfileId(HttpServletRequest request,ProfileRole requiredRole) {
 
 

@@ -4,7 +4,7 @@ import com.example.dto.entityDto.EmailHistoryDto;
 import com.example.entity.EmailHistoryEntity;
 import com.example.entity.EmailHistoryEntityRepository;
 import com.example.repository.EmailHistoryRepository;
-import com.example.repository.LikeRepository;
+import com.example.repository.article.ArticleLikeRepository;
 import com.example.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,7 +26,7 @@ public class EmailHistoryService {
 
 
     @Autowired
-    private LikeRepository likeRepository;
+    private ArticleLikeRepository likeRepository;
 
     @Autowired
     private EmailHistoryRepository emailHistoryRepository;

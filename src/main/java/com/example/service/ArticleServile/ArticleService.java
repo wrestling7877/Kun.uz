@@ -1,17 +1,25 @@
-package com.example.service;
+package com.example.service.ArticleServile;
 
-import com.example.dto.entityDto.article.ArticleCreatedDto;
-import com.example.dto.entityDto.article.ArticleDto;
+import com.example.dto.entityDto.RegionDto;
+import com.example.dto.entityDto.article.*;
+import com.example.dto.entityDto.profileDto.ProfileDto;
+import com.example.entity.ProfileEntity;
+import com.example.entity.RegionEntity;
 import com.example.entity.article.ArticleEntity;
 
-import com.example.dto.entityDto.article.ArticleShortInfoDTO;
 import com.example.enums.ArticleStatus;
+import com.example.enums.Language;
 import com.example.exp.ForbiddenException;
 import com.example.exp.ItemNotFoundException;
 import com.example.mapper.ArticleFullInfo;
 import com.example.mapper.ArticleShortInfoMapper;
+import com.example.repository.ProfileRepository;
+import com.example.repository.RegionRepository;
+import com.example.repository.article.ArticleCustomFilterRepository;
 import com.example.repository.article.ArticleRepository;
 import com.example.repository.ArticleTypeRepository;
+import com.example.repository.comment.CommentRepository;
+import com.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,9 +39,10 @@ public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
 
-
     @Autowired
-    private AttachService attachService;
+    private ResourceBundleService resourceBundleService;
+        @Autowired
+        private AttachService attachService;
     @Autowired
     private ArticleTypeRepository articleTypeRepository;
 
@@ -46,6 +55,17 @@ public class ArticleService {
 
     @Autowired
     private RegionService regionService;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+
+    @Autowired
+    private ArticleCustomFilterRepository filterRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
+    @Autowired
+    private RegionRepository regionRepository;
 
     public ArticleDto create(ArticleCreatedDto dto, Integer moderatorId) {
 
@@ -324,5 +344,72 @@ public class ArticleService {
     }
 
 
+    public Integer createViewCount(String id, Language language) {
 
+        Optional<ArticleEntity> articleEntity = articleRepository.findById(id);
+        if (articleEntity.isEmpty()) {
+            throw new ItemNotFoundException(resourceBundleService.getMessage("item.not.found", language.name()));
+        }
+        ArticleEntity entity1 = articleEntity.get();
+
+        Integer counts = entity1.getViewCount();
+        counts += 1;
+        entity1.setViewCount(counts);
+        articleRepository.save(entity1);
+        return counts;
+    }
+
+    public Integer createSharedCount(String articleId, Language language) {
+
+        Optional<ArticleEntity> articleEntity = articleRepository.findById(articleId);
+        if (articleEntity.isEmpty()) {
+            throw new ItemNotFoundException(resourceBundleService.getMessage("item.not.found", language.name()));
+        }
+        ArticleEntity entity1 = articleEntity.get();
+
+        Integer counts = entity1.getSharedCount();
+        counts += 1;
+        entity1.setSharedCount(counts);
+        articleRepository.save(entity1);
+        return counts;
+    }
+
+
+    public Page<ArticleShortInfoDTO> filterShortInfo(ArticleFilterDto filterDto, Integer page, Integer size) {
+
+        Page<ArticleEntity> pageObj = filterRepository.getFilterPage(filterDto, page, size);
+        List<ArticleEntity> entityList = pageObj.getContent();
+        List<ArticleShortInfoDTO> contentList = new LinkedList<>();
+        entityList.forEach(entity -> contentList.add(toShortToDTO(entity)));
+
+        return new PageImpl<>(contentList, PageRequest.of(page, size), pageObj.getTotalElements());
+    }
+
+
+//    public Page<ArticleFilterFullInfoDto> filterFullInfo(ArticleFilterDto filterDto, Integer page, Integer size) {
+//
+//        Page<ArticleEntity> pageObj = filterRepository.getFilterPage(filterDto, page, size);
+//        List<ArticleEntity> entityList = pageObj.getContent();
+//        List<ArticleFilterFullInfoDto> contentList = new LinkedList<>();
+//
+//        for (ArticleEntity entity : entityList) {
+//            ArticleFilterFullInfoDto dto = new ArticleFilterFullInfoDto();
+//            dto.setLikeCount(entity.getLikeCount());
+//            dto.setDescription(entity.getDescription());
+//
+//            Optional<RegionEntity> region = regionRepository.findById(entity.getRegionId());
+//            RegionDto regionDto = new RegionDto();
+//            regionDto.setKey(region.get().getKey());
+//            regionDto.set
+//            dto.setRegion(regionDto);
+//            dto.setContent(entity.getContent());
+//            dto.setSharedCount(entity.getSharedCount());
+//            dto.setPublishedDate(entity.getPublishedDate());
+//            dto.setViewCount(entity.getViewCount());
+//            dto.setImage(attachService.getById(entity.getImageId()));
+//            contentList.add(dto);
+//        }
+//
+//        return new PageImpl<>(contentList, PageRequest.of(page, size), pageObj.getTotalElements());
+//    }
 }

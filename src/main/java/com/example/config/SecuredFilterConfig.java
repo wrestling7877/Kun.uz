@@ -25,6 +25,7 @@ public class SecuredFilterConfig {
         bean.addUrlPatterns("/attach/admin/*");
         bean.addUrlPatterns("/article/admin/*");
         bean.addUrlPatterns("/emailHistoryController/admin/*");
+        bean.addUrlPatterns("/comment/*");
         return bean;
     }
 }

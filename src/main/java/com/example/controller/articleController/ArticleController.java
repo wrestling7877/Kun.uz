@@ -1,12 +1,11 @@
-package com.example.controller;
+package com.example.controller.articleController;
 
-import com.example.dto.entityDto.article.ArticleCreatedDto;
-import com.example.dto.entityDto.article.ArticleDto;
-import com.example.dto.entityDto.article.ArticleShortInfoDTO;
+import com.example.dto.entityDto.article.*;
+import com.example.enums.Language;
 import com.example.enums.ProfileRole;
 
 import com.example.mapper.ArticleFullInfo;
-import com.example.service.ArticleService;
+import com.example.service.ArticleServile.ArticleService;
 import com.example.util.HttpRequestUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +24,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/article")
 @Tag(name = "ArticleController API", description = "Api list for ArticleController")
-
 public class ArticleController {
 
     @Autowired
@@ -43,7 +40,7 @@ public class ArticleController {
         return ResponseEntity.ok(articleDto);
     }
 
-    @Operation(summary = "Method for updating",description = "This method used for updating")
+    @Operation(summary = "Method for updating", description = "This method used for updating")
     @PutMapping("/admin/update")
     public ResponseEntity<ArticleDto> update(@RequestBody ArticleCreatedDto dto, HttpServletRequest request) {
         HttpRequestUtil.getProfileId(request, ProfileRole.MODERATOR);
@@ -52,7 +49,7 @@ public class ArticleController {
         return ResponseEntity.ok(articleDto);
     }
 
-    @Operation(summary = "Method for deleting",description = "This method used for deleting")
+    @Operation(summary = "Method for deleting", description = "This method used for deleting")
     @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id, HttpServletRequest request) {
         HttpRequestUtil.getProfileId(request, ProfileRole.MODERATOR);
@@ -143,6 +140,45 @@ public class ArticleController {
     }
 
 
+    @PostMapping("/public/view_count")
+    public ResponseEntity<?> viewCount(@RequestParam("articleId") String articleId,
+                                       @RequestHeader(value = "Accept-Language", defaultValue = "RU") Language language) {
 
+        Integer counts = articleService.createViewCount(articleId, language);
+
+        return ResponseEntity.ok(counts);
+    }
+
+    @PostMapping("/public/shared_count")
+    public ResponseEntity<?> sharedCount(@RequestParam("articleId") String articleId,
+                                         @RequestHeader(value = "Accept-Language", defaultValue = "RU") Language language) {
+
+        Integer counts = articleService.createSharedCount(articleId, language);
+
+        return ResponseEntity.ok(counts);
+    }
+
+    @Operation(summary = "Method for getFilterShortInfoPage", description = "This method used for getFilterShortInfoPage")
+    @PostMapping("/admin/filterPage")
+    public ResponseEntity<?> getFilterShortInfoPage(@RequestParam(value = "page", defaultValue = "0") int page,
+                                           @RequestParam(value = "size", defaultValue = "5") int size,
+                                           @RequestBody ArticleFilterDto dto,
+                                           HttpServletRequest request) {
+        HttpRequestUtil.getJwtDto(request,ProfileRole.PUBLISHER);
+        Page<ArticleShortInfoDTO> result = articleService.filterShortInfo(dto, page, size);
+        return ResponseEntity.ok(result);
+    }
+
+
+//    @Operation(summary = "Method for getFilterFullInfoPage", description = "This method used for getFilterFullInfoPage")
+//    @PostMapping("/admin/fullFilterPage")
+//    public ResponseEntity<?> getFilterFullInfoPage(@RequestParam(value = "page", defaultValue = "0") int page,
+//                                           @RequestParam(value = "size", defaultValue = "5") int size,
+//                                           @RequestBody ArticleFilterDto dto,
+//                                           HttpServletRequest request) {
+//        HttpRequestUtil.getJwtDto(request,ProfileRole.PUBLISHER);
+//        Page<ArticleFilterFullInfoDto> result = articleService.filterFullInfo(dto, page, size);
+//        return ResponseEntity.ok(result);
+//    }
 
 }
